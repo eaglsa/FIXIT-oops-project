@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FixIt – KTU OOP Mini-Project Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --blue:   #2563eb;
+    --indigo: #4f46e5;
+    --green:  #16a34a;
+    --amber:  #d97706;
+    --red:    #dc2626;
+    --gray1:  #f8fafc;
+    --gray2:  #e2e8f0;
+    --gray3:  #94a3b8;
+    --gray9:  #0f172a;
+    --code-bg:#1e293b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--gray9);
+    background: #fff;
+    padding: 0 40px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ---- Cover ---- */
+  .cover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 60%, #7c3aed 100%);
+    color: #fff;
+    padding: 60px 48px;
+    margin: 0 -40px 48px;
+    border-radius: 0 0 24px 24px;
+  }
+  .cover h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 1.1rem; opacity: 0.85; margin-top: 8px; }
+  .cover .badges { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ---- Typography ---- */
+  h2 {
+    font-size: 1.5rem; font-weight: 700; color: var(--indigo);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gray2);
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 700; color: var(--blue);
+    margin: 28px 0 10px;
+  }
+  h4 {
+    font-size: 0.95rem; font-weight: 700; color: #374151;
+    margin: 18px 0 6px;
+  }
+  p  { margin-bottom: 10px; }
+  ul { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 4px; }
+  strong { font-weight: 700; }
+
+  /* ---- Info boxes ---- */
+  .box {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-left: 4px solid;
+  }
+  .box.blue   { background: #eff6ff; border-color: var(--blue);  }
+  .box.green  { background: #f0fdf4; border-color: var(--green); }
+  .box.amber  { background: #fffbeb; border-color: var(--amber); }
+  .box.red    { background: #fef2f2; border-color: var(--red);   }
+  .box .label { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .box.blue  .label { color: var(--blue);  }
+  .box.green .label { color: var(--green); }
+  .box.amber .label { color: var(--amber); }
+  .box.red   .label { color: var(--red);   }
+
+  /* ---- Code blocks ---- */
+  pre {
+    background: var(--code-bg);
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 12px 0 20px;
+    page-break-inside: avoid;
+  }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  p code, li code, td code {
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: #1e3a8a;
+  }
+
+  /* ---- Syntax colours (manual) ---- */
+  .kw  { color: #93c5fd; }   /* keywords */
+  .cm  { color: #64748b; font-style: italic; }  /* comments */
+  .st  { color: #86efac; }   /* strings */
+  .nu  { color: #fbbf24; }   /* numbers */
+  .cl  { color: #fde68a; }   /* class names */
+  .an  { color: #c4b5fd; }   /* annotations */
+  .fn  { color: #6ee7b7; }   /* method names */
+
+  /* ---- Tables ---- */
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; font-size: 13px; }
+  th { background: var(--indigo); color: #fff; padding: 9px 14px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 8px 14px; border-bottom: 1px solid var(--gray2); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--gray1); }
+
+  /* ---- Folder tree ---- */
+  .tree {
+    background: #f8fafc;
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 18px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 2;
+    margin: 12px 0 20px;
+  }
+  .tree .dir  { color: var(--indigo); font-weight: 600; }
+  .tree .file { color: #374151; }
+  .tree .note { color: var(--gray3); font-style: italic; }
+
+  /* ---- OOP pill tags ---- */
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 2px 3px 2px 0;
+  }
+  .pill-blue   { background: #dbeafe; color: #1e40af; }
+  .pill-purple { background: #ede9fe; color: #4f46e5; }
+  .pill-green  { background: #dcfce7; color: #166534; }
+  .pill-amber  { background: #fef3c7; color: #92400e; }
+  .pill-red    { background: #fee2e2; color: #991b1b; }
+
+  /* ---- Layer diagram ---- */
+  .layers {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 16px 0 24px;
+  }
+  .layer {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .layer .arrow { color: #94a3b8; margin: 0 4px; }
+  .l-ui   { background: #ede9fe; color: #4f46e5; border: 1.5px solid #c4b5fd; }
+  .l-svc  { background: #dbeafe; color: #1e40af; border: 1.5px solid #93c5fd; }
+  .l-dao  { background: #dcfce7; color: #166534; border: 1.5px solid #86efac; }
+  .l-db   { background: #fef3c7; color: #92400e; border: 1.5px solid #fcd34d; }
+
+  /* ---- Print ---- */
+  @media print {
+    body { padding: 0 24px 40px; font-size: 12px; }
+    .cover { margin: 0 -24px 36px; padding: 40px 32px; border-radius: 0; }
+    .cover h1 { font-size: 2.2rem; }
+    pre { font-size: 10.5px; }
+    h2 { page-break-before: auto; }
+    .no-break { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <h1>🔧 FixIt</h1>
+  <div class="sub">Digital Complaint &amp; Maintenance Tracker — KTU 2024 OOP Mini-Project</div>
+  <div class="badges">
+    <span class="badge">Java 17</span>
+    <span class="badge">Maven</span>
+    <span class="badge">MySQL + JDBC</span>
+    <span class="badge">CLI App</span>
+    <span class="badge">OOP</span>
+  </div>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<h2>📋 Table of Contents</h2>
+<ol style="margin-left:20px;line-height:2.2">
+  <li><a href="#overview">Project Overview</a></li>
+  <li><a href="#setup">Setup &amp; Running</a></li>
+  <li><a href="#structure">Folder Structure</a></li>
+  <li><a href="#architecture">Architecture &amp; Layers</a></li>
+  <li><a href="#oop">OOP Concepts Map</a></li>
+  <li><a href="#code">Complete Source Code</a></li>
+  <li><a href="#sql">Database Schema</a></li>
+  <li><a href="#flow">App Flow / Viva Notes</a></li>
+</ol>
+
+<!-- ===== OVERVIEW ===== -->
+<h2 id="overview">1. Project Overview</h2>
+<p>FixIt is a <strong>command-line Java application</strong> where:</p>
+<ul>
+  <li><strong>Students</strong> register, log in, raise maintenance complaints (electrical, plumbing, Wi-Fi, generic), and track their status.</li>
+  <li><strong>Staff</strong> log in, view all complaints, update statuses, and see a dashboard.</li>
+</ul>
+<p>The status of every complaint follows a strict workflow:</p>
+<div class="box blue">
+  <div class="label">Workflow</div>
+  <strong>REPORTED → IN_PROGRESS → RESOLVED</strong><br/>
+  Skipping steps or going backwards is rejected with a clear error message.
+</div>
+
+<h3>Demo Logins (pre-seeded)</h3>
+<table>
+  <tr><th>Username</th><th>Password</th><th>Role</th><th>What they can do</th></tr>
+  <tr><td><code>warden</code></td><td><code>staff123</code></td><td>STAFF</td><td>View all, update status, dashboard</td></tr>
+  <tr><td><code>electrician</code></td><td><code>staff123</code></td><td>STAFF</td><td>Same as warden</td></tr>
+  <tr><td><code>student1</code></td><td><code>pass123</code></td><td>STUDENT</td><td>Raise &amp; track own complaints</td></tr>
+  <tr><td><code>student2</code></td><td><code>pass123</code></td><td>STUDENT</td><td>Raise &amp; track own complaints</td></tr>
+</table>
+
+<!-- ===== SETUP ===== -->
+<h2 id="setup">2. Setup &amp; Running</h2>
+
+<h3>Prerequisites</h3>
+<table>
+  <tr><th>Tool</th><th>Version</th></tr>
+  <tr><td>JDK</td><td>17 or higher</td></tr>
+  <tr><td>Maven</td><td>3.6+</td></tr>
+  <tr><td>MySQL</td><td>8.x</td></tr>
+</table>
+
+<h3>Step 1 — Import the database (run once in cmd.exe, NOT PowerShell)</h3>
+<pre>cd C:\Users\...\Fixit
+mysql -u root -p&lt;yourpassword&gt; &lt; sql\schema.sql</pre>
+
+<div class="box amber">
+  <div class="label">⚠ PowerShell Note</div>
+  If you use PowerShell, the <code>&lt;</code> operator doesn't work. Open <strong>cmd.exe</strong> instead and paste the command there.
+</div>
+
+<h3>Step 2 — Set your MySQL password</h3>
+<p>Open <code>src/main/resources/db.properties</code> and edit:</p>
+<pre>db.url=jdbc:mysql://localhost:3306/fixit?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true
+db.user=root
+db.password=YOUR_ACTUAL_PASSWORD</pre>
+
+<h3>Step 3 — Run the app</h3>
+<pre>mvn compile exec:java</pre>
+
+<!-- ===== STRUCTURE ===== -->
+<h2 id="structure">3. Folder Structure</h2>
+<div class="tree">
+<span class="dir">FixIt/</span><br/>
+├── <span class="file">pom.xml</span>                              <span class="note">Maven build file</span><br/>
+├── <span class="file">README.md</span><br/>
+├── <span class="file">.gitignore</span><br/>
+├── <span class="file">db.properties.example</span>               <span class="note">Template — copy &amp; fill password</span><br/>
+├── <span class="dir">sql/</span><br/>
+│   └── <span class="file">schema.sql</span>                       <span class="note">Database tables + seed data</span><br/>
+└── <span class="dir">src/main/</span><br/>
+    ├── <span class="dir">resources/</span><br/>
+    │   └── <span class="file">db.properties</span>               <span class="note">Your local DB credentials (never commit)</span><br/>
+    └── <span class="dir">java/com/fixit/</span><br/>
+        ├── <span class="file">Main.java</span>                    <span class="note">Entry point — wires all layers</span><br/>
+        ├── <span class="dir">model/</span><br/>
+        │   ├── <span class="file">ComplaintType.java</span>       <span class="note">Enum: ELECTRICAL, PLUMBING, WIFI, GENERIC</span><br/>
+        │   ├── <span class="file">Status.java</span>              <span class="note">Enum with canTransitionTo() method</span><br/>
+        │   ├── <span class="file">Updatable.java</span>           <span class="note">Interface</span><br/>
+        │   ├── <span class="file">Complaint.java</span>           <span class="note">Abstract base class</span><br/>
+        │   ├── <span class="file">ElectricalComplaint.java</span><br/>
+        │   ├── <span class="file">PlumbingComplaint.java</span><br/>
+        │   ├── <span class="file">WifiComplaint.java</span><br/>
+        │   ├── <span class="file">GenericComplaint.java</span><br/>
+        │   ├── <span class="file">User.java</span>                <span class="note">Abstract base class</span><br/>
+        │   ├── <span class="file">Student.java</span><br/>
+        │   └── <span class="file">Staff.java</span><br/>
+        ├── <span class="dir">exception/</span><br/>
+        │   ├── <span class="file">AuthenticationException.java</span><br/>
+        │   ├── <span class="file">InvalidComplaintException.java</span><br/>
+        │   ├── <span class="file">InvalidStatusTransitionException.java</span><br/>
+        │   └── <span class="file">UnauthorizedActionException.java</span><br/>
+        ├── <span class="dir">service/</span><br/>
+        │   ├── <span class="file">ComplaintFactory.java</span>    <span class="note">Factory pattern</span><br/>
+        │   ├── <span class="file">AuthService.java</span>         <span class="note">Login &amp; register logic</span><br/>
+        │   └── <span class="file">ComplaintService.java</span>    <span class="note">All complaint business rules</span><br/>
+        ├── <span class="dir">dao/</span><br/>
+        │   ├── <span class="file">UserDAO.java</span>             <span class="note">SQL for users table</span><br/>
+        │   └── <span class="file">ComplaintDAO.java</span>        <span class="note">SQL for complaints + status_log</span><br/>
+        ├── <span class="dir">db/</span><br/>
+        │   └── <span class="file">DBConnector.java</span>         <span class="note">Singleton – one shared DB connection</span><br/>
+        └── <span class="dir">ui/</span><br/>
+            └── <span class="file">CLIMenu.java</span>             <span class="note">All Scanner &amp; System.out live here</span><br/>
+</div>
+
+<!-- ===== ARCHITECTURE ===== -->
+<h2 id="architecture">4. Architecture &amp; Layers</h2>
+<p>The app is divided into <strong>4 strict layers</strong>. Each layer may only talk to the layer directly below it.</p>
+
+<div class="layers">
+  <div class="layer l-ui">🖥️ <strong>UI Layer</strong> &nbsp;(CLIMenu.java) — Scanner, System.out live here. Calls services only.</div>
+  <div style="text-align:center;font-size:20px;color:#94a3b8;">↓</div>
+  <div class="layer l-svc">⚙️ <strong>Service Layer</strong> &nbsp;(AuthService, ComplaintService) — Business rules. No SQL, no Scanner.</div>
+  <div style="text-align:center;font-size:20px;color:#94a3b8;">↓</div>
+  <div class="layer l-dao">🗄️ <strong>DAO Layer</strong> &nbsp;(UserDAO, ComplaintDAO) — All SQL lives here. Uses PreparedStatement.</div>
+  <div style="text-align:center;font-size:20px;color:#94a3b8;">↓</div>
+  <div class="layer l-db">🔌 <strong>DB Layer</strong> &nbsp;(DBConnector) — Singleton. Opens &amp; holds the MySQL connection.</div>
+</div>
+
+<div class="box green">
+  <div class="label">✅ Why layers matter (viva answer)</div>
+  Layering means each class has one job. If we change the database from MySQL to something else, only the DAO and DB layers change — the service and UI code stays the same. This is called <strong>Separation of Concerns</strong>.
+</div>
+
+<!-- ===== OOP CONCEPTS ===== -->
+<h2 id="oop">5. OOP Concepts Map</h2>
+<table>
+  <tr><th>OOP Concept</th><th>Where it is</th><th>What to say in the viva</th></tr>
+  <tr>
+    <td><span class="pill pill-blue">Abstraction</span></td>
+    <td><code>Complaint.java</code>, <code>User.java</code></td>
+    <td>Abstract classes hide details. You can't do <code>new Complaint()</code> — you must use a concrete subclass.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-purple">Inheritance</span></td>
+    <td><code>ElectricalComplaint</code>, <code>PlumbingComplaint</code>, <code>WifiComplaint</code>, <code>GenericComplaint</code>, <code>Student</code>, <code>Staff</code></td>
+    <td>All four complaint types inherit from <code>Complaint</code> and reuse its fields and <code>updateStatus()</code> method.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-green">Polymorphism</span></td>
+    <td><code>getAssignedTeam()</code>, <code>getEstimatedResolutionHours()</code>, <code>getSafetyNote()</code>, <code>getRole()</code></td>
+    <td>Same method name, different behaviour per subclass. The correct version is picked at runtime based on the actual object type.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-amber">Interface</span></td>
+    <td><code>Updatable.java</code></td>
+    <td>Defines a contract: any class that implements <code>Updatable</code> must provide <code>updateStatus()</code>.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-blue">Encapsulation</span></td>
+    <td>Every model class</td>
+    <td>All fields are <code>private</code>. Outside code must use getters/setters — it can't directly change the data.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-purple">Singleton</span></td>
+    <td><code>DBConnector.java</code></td>
+    <td>Private constructor + static instance. Only one DB connection object ever exists in the whole app.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-green">Factory</span></td>
+    <td><code>ComplaintFactory.java</code></td>
+    <td>The caller passes a <code>ComplaintType</code>; the factory decides which subclass to create. The caller doesn't need to know about subclasses.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-red">Custom Exceptions</span></td>
+    <td><code>exception/</code> package</td>
+    <td>Four checked exceptions extend <code>Exception</code>, each with a clear message. Forces callers to handle errors.</td>
+  </tr>
+  <tr>
+    <td><span class="pill pill-amber">Enum with Behaviour</span></td>
+    <td><code>Status.canTransitionTo()</code></td>
+    <td>Enums can have methods. The workflow rules live inside the enum itself instead of being scattered across the code.</td>
+  </tr>
+</table>
+
+<!-- ===== SOURCE CODE ===== -->
+<h2 id="code">6. Complete Source Code</h2>
+
+<!-- ---------- pom.xml ---------- -->
+<h3>pom.xml</h3>
+<pre><span class="cm">&lt;!-- Maven build file --&gt;</span>
+&lt;project xmlns=<span class="st">"http://maven.apache.org/POM/4.0.0"</span> ...&gt;
+  &lt;groupId&gt;<span class="st">com.fixit</span>&lt;/groupId&gt;
+  &lt;artifactId&gt;<span class="st">FixIt</span>&lt;/artifactId&gt;
+  &lt;version&gt;<span class="st">1.0-SNAPSHOT</span>&lt;/version&gt;
+
+  &lt;properties&gt;
+    <span class="cm">&lt;!-- Compile to Java 17 byte-code --&gt;</span>
+    &lt;maven.compiler.release&gt;<span class="nu">17</span>&lt;/maven.compiler.release&gt;
+    &lt;project.build.sourceEncoding&gt;<span class="st">UTF-8</span>&lt;/project.build.sourceEncoding&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+    <span class="cm">&lt;!-- MySQL JDBC driver – the ONLY external dependency --&gt;</span>
+    &lt;dependency&gt;
+      &lt;groupId&gt;<span class="st">com.mysql</span>&lt;/groupId&gt;
+      &lt;artifactId&gt;<span class="st">mysql-connector-j</span>&lt;/artifactId&gt;
+      &lt;version&gt;<span class="st">8.3.0</span>&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;<span class="st">org.codehaus.mojo</span>&lt;/groupId&gt;
+        &lt;artifactId&gt;<span class="st">exec-maven-plugin</span>&lt;/artifactId&gt;
+        &lt;version&gt;<span class="st">3.1.0</span>&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;mainClass&gt;<span class="st">com.fixit.Main</span>&lt;/mainClass&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</pre>
+
+<!-- ---------- Main.java ---------- -->
+<h3>Main.java &nbsp;<span class="pill pill-blue">Entry Point</span></h3>
+<pre><span class="kw">package</span> com.fixit;
+
+<span class="kw">import</span> com.fixit.dao.ComplaintDAO;
+<span class="kw">import</span> com.fixit.dao.UserDAO;
+<span class="kw">import</span> com.fixit.db.DBConnector;
+<span class="kw">import</span> com.fixit.service.AuthService;
+<span class="kw">import</span> com.fixit.service.ComplaintService;
+<span class="kw">import</span> com.fixit.ui.CLIMenu;
+<span class="kw">import</span> java.sql.Connection;
+
+<span class="cm">/**
+ * Application entry point.
+ * Wires up all layers (db -&gt; dao -&gt; service -&gt; ui) and starts the CLI menu.
+ * If the database connection fails, a clear error is printed and the app exits.
+ */</span>
+<span class="kw">public class</span> <span class="cl">Main</span> {
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+
+        <span class="cm">// 1. Check DB connection before doing anything else</span>
+        Connection conn = <span class="cl">DBConnector</span>.getInstance().getConnection();
+        <span class="kw">if</span> (conn == <span class="kw">null</span>) {
+            System.err.println(<span class="st">"STARTUP ERROR: Could not connect to the database."</span>);
+            System.err.println(<span class="st">"Check: MySQL is running, db.properties password is correct,"</span>);
+            System.err.println(<span class="st">"and you have run sql/schema.sql."</span>);
+            System.exit(<span class="nu">1</span>);
+        }
+
+        <span class="cm">// 2. Wire up the layers (manual dependency injection)</span>
+        <span class="cl">UserDAO</span>          userDAO          = <span class="kw">new</span> <span class="cl">UserDAO</span>();
+        <span class="cl">ComplaintDAO</span>     complaintDAO     = <span class="kw">new</span> <span class="cl">ComplaintDAO</span>();
+        <span class="cl">AuthService</span>      authService      = <span class="kw">new</span> <span class="cl">AuthService</span>(userDAO);
+        <span class="cl">ComplaintService</span> complaintService = <span class="kw">new</span> <span class="cl">ComplaintService</span>(complaintDAO);
+
+        <span class="cm">// 3. Hand control to the UI</span>
+        <span class="cl">CLIMenu</span> menu = <span class="kw">new</span> <span class="cl">CLIMenu</span>(authService, complaintService);
+        menu.start();
+    }
+}</pre>
+
+<!-- ---------- ComplaintType ---------- -->
+<h3>model/ComplaintType.java &nbsp;<span class="pill pill-amber">Enum</span></h3>
+<pre><span class="kw">package</span> com.fixit.model;
+
+<span class="cm">/**
+ * The four complaint categories.
+ * OOP: Enum with a field and a static helper method.
+ */</span>
+<span class="kw">public enum</span> <span class="cl">ComplaintType</span> {
+
+    ELECTRICAL(<span class="st">"Electrical"</span>),
+    PLUMBING(<span class="st">"Plumbing"</span>),
+    WIFI(<span class="st">"Wi-Fi"</span>),
+    GENERIC(<span class="st">"Generic"</span>);
+
+    <span class="kw">private final</span> String displayName;
+
+    <span class="cl">ComplaintType</span>(String displayName) {
+        <span class="kw">this</span>.displayName = displayName;
+    }
+
+    <span class="kw">public</span> String <span class="fn">getDisplayName</span>() { <span class="kw">return</span> displayName; }
+
+    <span class="cm">/** Converts menu choice 1-4 to a ComplaintType. Returns null for invalid input. */</span>
+    <span class="kw">public static</span> <span class="cl">ComplaintType</span> <span class="fn">fromMenuChoice</span>(<span class="kw">int</span> choice) {
+        <span class="kw">return switch</span> (choice) {
+            <span class="kw">case</span> <span class="nu">1</span> -&gt; ELECTRICAL;
+            <span class="kw">case</span> <span class="nu">2</span> -&gt; PLUMBING;
+            <span class="kw">case</span> <span class="nu">3</span> -&gt; WIFI;
+            <span class="kw">case</span> <span class="nu">4</span> -&gt; GENERIC;
+            <span class="kw">default</span> -&gt; <span class="kw">null</span>;
+        };
+    }
+}</pre>
+
+<!-- ---------- Status ---------- -->
+<h3>model/Status.java &nbsp;<span class="pill pill-amber">Enum with Behaviour</span></h3>
+<pre><span class="kw">package</span> com.fixit.model;
+
+<span class="cm">/**
+ * Workflow states. OOP: Enum with a method that encodes transition rules.
+ * Allowed: REPORTED → IN_PROGRESS → RESOLVED only.
+ */</span>
+<span class="kw">public enum</span> <span class="cl">Status</span> {
+
+    REPORTED,
+    IN_PROGRESS,
+    RESOLVED;
+
+    <span class="cm">/**
+     * Returns true only when moving from this status to 'next' is allowed.
+     * OOP: behaviour inside an enum — not just a plain constant.
+     */</span>
+    <span class="kw">public boolean</span> <span class="fn">canTransitionTo</span>(<span class="cl">Status</span> next) {
+        <span class="kw">return switch</span> (<span class="kw">this</span>) {
+            <span class="kw">case</span> REPORTED    -&gt; next == IN_PROGRESS;  <span class="cm">// only one legal step</span>
+            <span class="kw">case</span> IN_PROGRESS -&gt; next == RESOLVED;     <span class="cm">// only one legal step</span>
+            <span class="kw">case</span> RESOLVED    -&gt; <span class="kw">false</span>;               <span class="cm">// terminal state</span>
+        };
+    }
+}</pre>
+
+<!-- ---------- Updatable ---------- -->
+<h3>model/Updatable.java &nbsp;<span class="pill pill-green">Interface</span></h3>
+<pre><span class="kw">package</span> com.fixit.model;
+<span class="kw">import</span> com.fixit.exception.InvalidStatusTransitionException;
+
+<span class="cm">/**
+ * Any object that can have its status updated must implement this interface.
+ * OOP: Interface – defines a contract.
+ */</span>
+<span class="kw">public interface</span> <span class="cl">Updatable</span> {
+    <span class="kw">void</span> <span class="fn">updateStatus</span>(<span class="cl">Status</span> newStatus) <span class="kw">throws</span> <span class="cl">InvalidStatusTransitionException</span>;
+}</pre>
+
+<!-- ---------- Complaint ---------- -->
+<h3>model/Complaint.java &nbsp;<span class="pill pill-blue">Abstract Class</span> <span class="pill pill-green">Interface impl</span></h3>
+<pre><span class="kw">package</span> com.fixit.model;
+<span class="kw">import</span> com.fixit.exception.InvalidStatusTransitionException;
+<span class="kw">import</span> java.time.LocalDate;
+
+<span class="cm">/**
+ * Abstract base for all complaint types.
+ * OOP: Abstraction, Encapsulation, Inheritance, Interface implementation.
+ */</span>
+<span class="kw">public abstract class</span> <span class="cl">Complaint</span> <span class="kw">implements</span> <span class="cl">Updatable</span> {
+
+    <span class="cm">// Encapsulation: all fields are private</span>
+    <span class="kw">private int</span>       id;
+    <span class="kw">private</span> String    description;
+    <span class="kw">private</span> String    location;
+    <span class="kw">private</span> <span class="cl">Status</span>    status;
+    <span class="kw">private int</span>       raisedBy;
+    <span class="kw">private</span> <span class="cl">LocalDate</span> dateReported;
+
+    <span class="kw">public</span> <span class="cl">Complaint</span>(String description, String location, <span class="kw">int</span> raisedBy, <span class="cl">LocalDate</span> dateReported) {
+        <span class="kw">this</span>.description  = description;
+        <span class="kw">this</span>.location     = location;
+        <span class="kw">this</span>.raisedBy     = raisedBy;
+        <span class="kw">this</span>.dateReported = dateReported;
+        <span class="kw">this</span>.status       = <span class="cl">Status</span>.REPORTED; <span class="cm">// starts as REPORTED</span>
+        <span class="kw">this</span>.id           = <span class="nu">0</span>;
+    }
+
+    <span class="cm">// Implements Updatable interface. Validates transition before applying.</span>
+    <span class="an">@Override</span>
+    <span class="kw">public void</span> <span class="fn">updateStatus</span>(<span class="cl">Status</span> newStatus) <span class="kw">throws</span> <span class="cl">InvalidStatusTransitionException</span> {
+        <span class="kw">if</span> (!<span class="kw">this</span>.status.canTransitionTo(newStatus)) {
+            <span class="kw">throw new</span> <span class="cl">InvalidStatusTransitionException</span>(<span class="kw">this</span>.status.name(), newStatus.name());
+        }
+        <span class="kw">this</span>.status = newStatus;
+    }
+
+    <span class="cm">// Abstract methods – subclasses MUST implement (Polymorphism)</span>
+    <span class="kw">public abstract</span> <span class="cl">ComplaintType</span> <span class="fn">getType</span>();
+    <span class="kw">public abstract</span> String <span class="fn">getAssignedTeam</span>();
+    <span class="kw">public abstract int</span> <span class="fn">getEstimatedResolutionHours</span>();
+    <span class="kw">public abstract</span> String <span class="fn">getSafetyNote</span>();
+
+    <span class="cm">// Concrete method – shared by all subclasses</span>
+    <span class="kw">public</span> String <span class="fn">getSummary</span>() {
+        <span class="kw">return</span> <span class="st">"  ID          : "</span> + id + <span class="st">"\n"</span>
+             + <span class="st">"  Type        : "</span> + getType().getDisplayName() + <span class="st">"\n"</span>
+             + <span class="st">"  Location    : "</span> + location + <span class="st">"\n"</span>
+             + <span class="st">"  Status      : "</span> + status + <span class="st">"\n"</span>
+             + <span class="st">"  Date        : "</span> + dateReported + <span class="st">"\n"</span>
+             + <span class="st">"  Description : "</span> + description;
+    }
+
+    <span class="cm">// Getters</span>
+    <span class="kw">public int</span>       <span class="fn">getId</span>()           { <span class="kw">return</span> id; }
+    <span class="kw">public</span> String    <span class="fn">getDescription</span>()  { <span class="kw">return</span> description; }
+    <span class="kw">public</span> String    <span class="fn">getLocation</span>()     { <span class="kw">return</span> location; }
+    <span class="kw">public</span> <span class="cl">Status</span>    <span class="fn">getStatus</span>()       { <span class="kw">return</span> status; }
+    <span class="kw">public int</span>       <span class="fn">getRaisedBy</span>()     { <span class="kw">return</span> raisedBy; }
+    <span class="kw">public</span> <span class="cl">LocalDate</span> <span class="fn">getDateReported</span>() { <span class="kw">return</span> dateReported; }
+    <span class="kw">public void</span>      <span class="fn">setId</span>(<span class="kw">int</span> id)      { <span class="kw">this</span>.id = id; }
+    <span class="kw">public void</span>      <span class="fn">setStatus</span>(<span class="cl">Status</span> s){ <span class="kw">this</span>.status = s; }
+}</pre>
+
+<!-- ---------- Subclasses ---------- -->
+<h3>model/ElectricalComplaint.java &nbsp;<span class="pill pill-purple">Inheritance</span> <span class="pill pill-green">Polymorphism</span></h3>
+<pre><span class="kw">package</span> com.fixit.model;
+<span class="kw">import</span> java.time.LocalDate;
+
+<span class="cm">/**
+ * OOP: Inheritance (extends Complaint), Polymorphism (overrides 4 abstract methods).
+ */</span>
+<span class="kw">public class</span> <span class="cl">ElectricalComplaint</span> <span class="kw">extends</span> <span class="cl">Complaint</span> {
+
+    <span class="kw">public</span> <span class="cl">ElectricalComplaint</span>(String desc, String loc, <span class="kw">int</span> raisedBy, <span class="cl">LocalDate</span> date) {
+        <span class="kw">super</span>(desc, loc, raisedBy, date);
+    }
+
+    <span class="an">@Override</span> <span class="kw">public</span> <span class="cl">ComplaintType</span> <span class="fn">getType</span>()                { <span class="kw">return</span> <span class="cl">ComplaintType</span>.ELECTRICAL; }
+    <span class="an">@Override</span> <span class="kw">public</span> String          <span class="fn">getAssignedTeam</span>()        { <span class="kw">return</span> <span class="st">"Electrician team"</span>; }
+    <span class="an">@Override</span> <span class="kw">public int</span>            <span class="fn">getEstimatedResolutionHours</span>() { <span class="kw">return</span> <span class="nu">24</span>; }
+    <span class="an">@Override</span> <span class="kw">public</span> String          <span class="fn">getSafetyNote</span>()          {
+        <span class="kw">return</span> <span class="st">"Do not touch exposed wires; switch off the supply if safe."</span>;
+    }
+}
+
+<span class="cm">// PlumbingComplaint — same structure, different values:</span>
+<span class="cm">//   getAssignedTeam()           → "Plumbing team"</span>
+<span class="cm">//   getEstimatedResolutionHours()→ 48</span>
+<span class="cm">//   getSafetyNote()             → "Turn off the nearest valve if there is flooding."</span>
+
+<span class="cm">// WifiComplaint — same structure:</span>
+<span class="cm">//   getAssignedTeam()           → "Network/IT team"</span>
+<span class="cm">//   getEstimatedResolutionHours()→ 12</span>
+<span class="cm">//   getSafetyNote()             → "Try reconnecting before reporting again."</span>
+
+<span class="cm">// GenericComplaint — same structure:</span>
+<span class="cm">//   getAssignedTeam()           → "General maintenance"</span>
+<span class="cm">//   getEstimatedResolutionHours()→ 72</span>
+<span class="cm">//   getSafetyNote()             → "No special precautions."</span></pre>
+
+<!-- ---------- User hierarchy ---------- -->
+<h3>model/User.java, Student.java, Staff.java &nbsp;<span class="pill pill-blue">Abstraction</span> <span class="pill pill-purple">Inheritance</span></h3>
+<pre><span class="cm">// User.java — abstract base</span>
+<span class="kw">public abstract class</span> <span class="cl">User</span> {
+    <span class="kw">private int</span>    id;
+    <span class="kw">private</span> String name;
+    <span class="kw">private</span> String password;
+
+    <span class="kw">public</span> <span class="cl">User</span>(<span class="kw">int</span> id, String name, String password) { ... }
+
+    <span class="kw">public abstract</span> String <span class="fn">getRole</span>();           <span class="cm">// "STUDENT" or "STAFF"</span>
+    <span class="kw">public abstract</span> String <span class="fn">getWelcomeMessage</span>(); <span class="cm">// different text per role</span>
+
+    <span class="kw">public int</span>    <span class="fn">getId</span>()       { <span class="kw">return</span> id; }
+    <span class="kw">public</span> String <span class="fn">getName</span>()     { <span class="kw">return</span> name; }
+    <span class="kw">public</span> String <span class="fn">getPassword</span>() { <span class="kw">return</span> password; }
+}
+
+<span class="cm">// Student.java — OOP: polymorphism, different getRole() and getWelcomeMessage()</span>
+<span class="kw">public class</span> <span class="cl">Student</span> <span class="kw">extends</span> <span class="cl">User</span> {
+    <span class="kw">public</span> <span class="cl">Student</span>(<span class="kw">int</span> id, String name, String password) { <span class="kw">super</span>(id, name, password); }
+    <span class="an">@Override</span> <span class="kw">public</span> String <span class="fn">getRole</span>()           { <span class="kw">return</span> <span class="st">"STUDENT"</span>; }
+    <span class="an">@Override</span> <span class="kw">public</span> String <span class="fn">getWelcomeMessage</span>() {
+        <span class="kw">return</span> <span class="st">"Welcome, Student "</span> + getName() + <span class="st">"! You can raise and track your complaints."</span>;
+    }
+}
+
+<span class="cm">// Staff.java — OOP: polymorphism, different getRole() and getWelcomeMessage()</span>
+<span class="kw">public class</span> <span class="cl">Staff</span> <span class="kw">extends</span> <span class="cl">User</span> {
+    <span class="kw">public</span> <span class="cl">Staff</span>(<span class="kw">int</span> id, String name, String password) { <span class="kw">super</span>(id, name, password); }
+    <span class="an">@Override</span> <span class="kw">public</span> String <span class="fn">getRole</span>()           { <span class="kw">return</span> <span class="st">"STAFF"</span>; }
+    <span class="an">@Override</span> <span class="kw">public</span> String <span class="fn">getWelcomeMessage</span>() {
+        <span class="kw">return</span> <span class="st">"Welcome, Staff "</span> + getName() + <span class="st">"! You can manage and resolve complaints."</span>;
+    }
+}</pre>
+
+<!-- ---------- Exceptions ---------- -->
+<h3>exception/ — Four Custom Checked Exceptions</h3>
+<pre><span class="cm">// All four follow the same pattern — extend Exception with a message constructor.</span>
+
+<span class="kw">public class</span> <span class="cl">AuthenticationException</span>          <span class="kw">extends</span> Exception { <span class="kw">public</span> <span class="cl">AuthenticationException</span>(String msg)          { <span class="kw">super</span>(msg); } }
+<span class="kw">public class</span> <span class="cl">InvalidComplaintException</span>          <span class="kw">extends</span> Exception { <span class="kw">public</span> <span class="cl">InvalidComplaintException</span>(String msg)          { <span class="kw">super</span>(msg); } }
+<span class="kw">public class</span> <span class="cl">UnauthorizedActionException</span>         <span class="kw">extends</span> Exception { <span class="kw">public</span> <span class="cl">UnauthorizedActionException</span>(String msg)         { <span class="kw">super</span>(msg); } }
+
+<span class="cm">// InvalidStatusTransitionException includes from/to in the message:</span>
+<span class="kw">public class</span> <span class="cl">InvalidStatusTransitionException</span> <span class="kw">extends</span> Exception {
+    <span class="kw">public</span> <span class="cl">InvalidStatusTransitionException</span>(String from, String to) {
+        <span class="kw">super</span>(<span class="st">"Cannot change status from "</span> + from + <span class="st">" to "</span> + to
+            + <span class="st">". Allowed path: REPORTED -&gt; IN_PROGRESS -&gt; RESOLVED."</span>);
+    }
+}</pre>
+
+<!-- ---------- DBConnector ---------- -->
+<h3>db/DBConnector.java &nbsp;<span class="pill pill-purple">Singleton Pattern</span></h3>
+<pre><span class="kw">package</span> com.fixit.db;
+
+<span class="cm">/**
+ * Singleton: only ONE instance can ever exist.
+ * How: private constructor + private static instance + public static getInstance().
+ */</span>
+<span class="kw">public class</span> <span class="cl">DBConnector</span> {
+
+    <span class="kw">private static</span> <span class="cl">DBConnector</span> instance;   <span class="cm">// the one-and-only instance</span>
+    <span class="kw">private</span> Connection connection;
+
+    <span class="cm">// Private constructor – nobody outside can call "new DBConnector()"</span>
+    <span class="kw">private</span> <span class="cl">DBConnector</span>() {
+        InputStream input = getClass().getClassLoader().getResourceAsStream(<span class="st">"db.properties"</span>);
+        Properties props = <span class="kw">new</span> Properties();
+        props.load(input);
+        <span class="kw">this</span>.connection = DriverManager.getConnection(
+            props.getProperty(<span class="st">"db.url"</span>),
+            props.getProperty(<span class="st">"db.user"</span>),
+            props.getProperty(<span class="st">"db.password"</span>)
+        );
+    }
+
+    <span class="cm">// Public accessor – creates the instance once, returns it every time</span>
+    <span class="kw">public static</span> <span class="cl">DBConnector</span> <span class="fn">getInstance</span>() {
+        <span class="kw">if</span> (instance == <span class="kw">null</span>) {
+            instance = <span class="kw">new</span> <span class="cl">DBConnector</span>();  <span class="cm">// created exactly ONCE</span>
+        }
+        <span class="kw">return</span> instance;
+    }
+
+    <span class="kw">public</span> Connection <span class="fn">getConnection</span>() { <span class="kw">return</span> connection; }
+}</pre>
+
+<!-- ---------- ComplaintFactory ---------- -->
+<h3>service/ComplaintFactory.java &nbsp;<span class="pill pill-green">Factory Pattern</span></h3>
+<pre><span class="kw">package</span> com.fixit.service;
+
+<span class="cm">/**
+ * Factory: caller passes a ComplaintType, factory picks the right subclass.
+ * OOP: Factory pattern – hides "new XComplaint()" from the rest of the code.
+ */</span>
+<span class="kw">public class</span> <span class="cl">ComplaintFactory</span> {
+
+    <span class="kw">private</span> <span class="cl">ComplaintFactory</span>() {}  <span class="cm">// never instantiate this</span>
+
+    <span class="kw">public static</span> <span class="cl">Complaint</span> <span class="fn">create</span>(<span class="cl">ComplaintType</span> type, String desc,
+                                    String loc, <span class="kw">int</span> raisedBy, <span class="cl">LocalDate</span> date) {
+        <span class="kw">return switch</span> (type) {
+            <span class="kw">case</span> ELECTRICAL -&gt; <span class="kw">new</span> <span class="cl">ElectricalComplaint</span>(desc, loc, raisedBy, date);
+            <span class="kw">case</span> PLUMBING   -&gt; <span class="kw">new</span> <span class="cl">PlumbingComplaint</span>(desc, loc, raisedBy, date);
+            <span class="kw">case</span> WIFI       -&gt; <span class="kw">new</span> <span class="cl">WifiComplaint</span>(desc, loc, raisedBy, date);
+            <span class="kw">case</span> GENERIC    -&gt; <span class="kw">new</span> <span class="cl">GenericComplaint</span>(desc, loc, raisedBy, date);
+        };
+    }
+
+    <span class="cm">// Used by ComplaintDAO to rebuild an object from a database row</span>
+    <span class="kw">public static</span> <span class="cl">Complaint</span> <span class="fn">rebuild</span>(<span class="kw">int</span> id, <span class="cl">ComplaintType</span> type, String desc,
+                                      String loc, <span class="kw">int</span> raisedBy, <span class="cl">LocalDate</span> date, <span class="cl">Status</span> status) {
+        <span class="cl">Complaint</span> c = create(type, desc, loc, raisedBy, date);
+        c.setId(id);
+        c.setStatus(status);
+        <span class="kw">return</span> c;
+    }
+}</pre>
+
+<!-- ---------- AuthService ---------- -->
+<h3>service/AuthService.java</h3>
+<pre><span class="kw">public class</span> <span class="cl">AuthService</span> {
+
+    <span class="kw">private final</span> <span class="cl">UserDAO</span> userDAO;
+
+    <span class="kw">public</span> <span class="cl">AuthService</span>(<span class="cl">UserDAO</span> userDAO) { <span class="kw">this</span>.userDAO = userDAO; }
+
+    <span class="cm">/** Login – throws AuthenticationException if credentials are wrong */</span>
+    <span class="kw">public</span> <span class="cl">User</span> <span class="fn">login</span>(String name, String password) <span class="kw">throws</span> <span class="cl">AuthenticationException</span> {
+        <span class="cl">User</span> user = userDAO.findByNameAndPassword(name, password);
+        <span class="kw">if</span> (user == <span class="kw">null</span>) <span class="kw">throw new</span> <span class="cl">AuthenticationException</span>(<span class="st">"Invalid username or password."</span>);
+        <span class="kw">return</span> user;
+    }
+
+    <span class="cm">/** Register – rejects blank name, short password, duplicate name */</span>
+    <span class="kw">public</span> <span class="cl">User</span> <span class="fn">registerStudent</span>(String name, String password) <span class="kw">throws</span> <span class="cl">InvalidComplaintException</span> {
+        name = name.trim(); password = password.trim();
+        <span class="kw">if</span> (name.isEmpty())          <span class="kw">throw new</span> <span class="cl">InvalidComplaintException</span>(<span class="st">"Username cannot be blank."</span>);
+        <span class="kw">if</span> (password.length() &lt; <span class="nu">4</span>)  <span class="kw">throw new</span> <span class="cl">InvalidComplaintException</span>(<span class="st">"Password must be at least 4 chars."</span>);
+        <span class="kw">if</span> (userDAO.nameExists(name)) <span class="kw">throw new</span> <span class="cl">InvalidComplaintException</span>(<span class="st">"Username already taken."</span>);
+        <span class="kw">return</span> userDAO.createStudent(name, password);
+    }
+}</pre>
+
+<!-- ---------- ComplaintService ---------- -->
+<h3>service/ComplaintService.java (key methods)</h3>
+<pre><span class="kw">public class</span> <span class="cl">ComplaintService</span> {
+
+    <span class="kw">public</span> <span class="cl">Complaint</span> <span class="fn">raiseComplaint</span>(<span class="cl">User</span> user, <span class="cl">ComplaintType</span> type,
+                                     String desc, String loc) <span class="kw">throws</span> ... {
+        <span class="kw">if</span> (!<span class="st">"STUDENT"</span>.equals(user.getRole()))
+            <span class="kw">throw new</span> <span class="cl">UnauthorizedActionException</span>(<span class="st">"Only students can raise complaints."</span>);
+        <span class="kw">if</span> (desc.trim().length() &lt; <span class="nu">5</span>)
+            <span class="kw">throw new</span> <span class="cl">InvalidComplaintException</span>(<span class="st">"Description too short."</span>);
+        <span class="cm">// Factory picks the right subclass:</span>
+        <span class="cl">Complaint</span> c = <span class="cl">ComplaintFactory</span>.create(type, desc, loc, user.getId(), LocalDate.now());
+        complaintDAO.insert(c);
+        <span class="kw">return</span> c;
+    }
+
+    <span class="kw">public void</span> <span class="fn">updateStatus</span>(<span class="cl">User</span> user, <span class="kw">int</span> complaintId, <span class="cl">Status</span> newStatus) <span class="kw">throws</span> ... {
+        <span class="kw">if</span> (!<span class="st">"STAFF"</span>.equals(user.getRole()))
+            <span class="kw">throw new</span> <span class="cl">UnauthorizedActionException</span>(<span class="st">"Only staff can update complaint status."</span>);
+        <span class="cl">Complaint</span> c = complaintDAO.findById(complaintId);
+        <span class="cm">// updateStatus() validates via Status.canTransitionTo() – throws if invalid</span>
+        c.updateStatus(newStatus);
+        complaintDAO.updateStatus(complaintId, newStatus, user.getId());  <span class="cm">// transactional</span>
+    }
+}</pre>
+
+<!-- ---------- UserDAO ---------- -->
+<h3>dao/UserDAO.java &nbsp;<span class="pill pill-amber">PreparedStatement</span></h3>
+<pre><span class="kw">public class</span> <span class="cl">UserDAO</span> {
+
+    <span class="kw">public</span> <span class="cl">User</span> <span class="fn">findByNameAndPassword</span>(String name, String password) <span class="kw">throws</span> SQLException {
+        String sql = <span class="st">"SELECT id, name, role, password FROM users WHERE name = ? AND password = ?"</span>;
+
+        <span class="cm">// try-with-resources closes connection and statement automatically</span>
+        <span class="kw">try</span> (Connection conn = <span class="cl">DBConnector</span>.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(<span class="nu">1</span>, name);
+            ps.setString(<span class="nu">2</span>, password);
+
+            <span class="kw">try</span> (ResultSet rs = ps.executeQuery()) {
+                <span class="kw">if</span> (rs.next()) {
+                    String role = rs.getString(<span class="st">"role"</span>);
+                    <span class="cm">// OOP: return the right subclass based on role (polymorphism)</span>
+                    <span class="kw">if</span> (<span class="st">"STAFF"</span>.equals(role)) <span class="kw">return new</span> <span class="cl">Staff</span>(...);
+                    <span class="kw">else</span>                    <span class="kw">return new</span> <span class="cl">Student</span>(...);
+                }
+            }
+        }
+        <span class="kw">return null</span>;
+    }
+
+    <span class="kw">public boolean</span> <span class="fn">nameExists</span>(String name) <span class="kw">throws</span> SQLException { ... }
+    <span class="kw">public</span> <span class="cl">User</span>    <span class="fn">createStudent</span>(String name, String password) <span class="kw">throws</span> SQLException { ... }
+}</pre>
+
+<!-- ---------- ComplaintDAO ---------- -->
+<h3>dao/ComplaintDAO.java — Transactional updateStatus</h3>
+<pre><span class="cm">/** Updates complaint AND logs the change in one DB transaction. */</span>
+<span class="kw">public void</span> <span class="fn">updateStatus</span>(<span class="kw">int</span> complaintId, <span class="cl">Status</span> newStatus, <span class="kw">int</span> changedBy) <span class="kw">throws</span> SQLException {
+    Connection conn = <span class="cl">DBConnector</span>.getInstance().getConnection();
+    <span class="kw">try</span> {
+        conn.setAutoCommit(<span class="kw">false</span>);  <span class="cm">// begin transaction</span>
+
+        <span class="cm">// Step 1: update the complaints row</span>
+        <span class="kw">try</span> (PreparedStatement ps = conn.prepareStatement(
+                <span class="st">"UPDATE complaints SET status = ? WHERE id = ?"</span>)) {
+            ps.setString(<span class="nu">1</span>, newStatus.name());
+            ps.setInt(<span class="nu">2</span>, complaintId);
+            ps.executeUpdate();
+        }
+
+        <span class="cm">// Step 2: insert a row in status_log</span>
+        <span class="kw">try</span> (PreparedStatement ps = conn.prepareStatement(
+                <span class="st">"INSERT INTO status_log (complaint_id, old_status, new_status, changed_by) VALUES (?,?,?,?)"</span>)) {
+            ps.setInt(<span class="nu">1</span>, complaintId);
+            ps.setString(<span class="nu">2</span>, oldStatus.name());
+            ps.setString(<span class="nu">3</span>, newStatus.name());
+            ps.setInt(<span class="nu">4</span>, changedBy);
+            ps.executeUpdate();
+        }
+
+        conn.commit();   <span class="cm">// both steps OK → commit</span>
+
+    } <span class="kw">catch</span> (SQLException e) {
+        conn.rollback(); <span class="cm">// one step failed → undo everything</span>
+        <span class="kw">throw</span> e;
+    } <span class="kw">finally</span> {
+        conn.setAutoCommit(<span class="kw">true</span>);
+    }
+}</pre>
+
+<!-- ---------- CLIMenu ---------- -->
+<h3>ui/CLIMenu.java — Safe Integer Input (Never Crashes)</h3>
+<pre><span class="cm">/**
+ * Reads an integer from [min, max]. Loops forever until valid input.
+ * Never crashes on letters or out-of-range numbers.
+ */</span>
+<span class="kw">private int</span> <span class="fn">readInt</span>(<span class="kw">int</span> min, <span class="kw">int</span> max) {
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        String input = scanner.nextLine().trim();
+        <span class="kw">try</span> {
+            <span class="kw">int</span> value = Integer.parseInt(input);
+            <span class="kw">if</span> (value &gt;= min &amp;&amp; value &lt;= max) <span class="kw">return</span> value;
+            System.out.printf(<span class="st">"Enter %d-%d: "</span>, min, max);
+        } <span class="kw">catch</span> (NumberFormatException e) {
+            System.out.print(<span class="st">"Not a number. Try again: "</span>);
+        }
+    }
+}</pre>
+
+<!-- ===== SQL ===== -->
+<h2 id="sql">7. Database Schema (sql/schema.sql)</h2>
+<pre>CREATE DATABASE IF NOT EXISTS fixit;
+USE fixit;
+
+<span class="cm">-- Users table (students and staff)</span>
+CREATE TABLE IF NOT EXISTS users (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    name     VARCHAR(100) NOT NULL UNIQUE,
+    role     ENUM('STUDENT','STAFF') NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+
+<span class="cm">-- Complaints table</span>
+CREATE TABLE IF NOT EXISTS complaints (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    type          ENUM('ELECTRICAL','PLUMBING','WIFI','GENERIC') NOT NULL,
+    description   TEXT NOT NULL,
+    location      VARCHAR(100) NOT NULL,
+    status        ENUM('REPORTED','IN_PROGRESS','RESOLVED') NOT NULL DEFAULT 'REPORTED',
+    raised_by     INT NOT NULL,
+    date_reported DATE NOT NULL,
+    FOREIGN KEY (raised_by) REFERENCES users(id)
+);
+
+<span class="cm">-- Status log table (records every status change for history)</span>
+CREATE TABLE IF NOT EXISTS status_log (
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    complaint_id INT NOT NULL,
+    old_status   ENUM('REPORTED','IN_PROGRESS','RESOLVED') NOT NULL,
+    new_status   ENUM('REPORTED','IN_PROGRESS','RESOLVED') NOT NULL,
+    changed_by   INT NOT NULL,
+    changed_on   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (complaint_id) REFERENCES complaints(id),
+    FOREIGN KEY (changed_by)   REFERENCES users(id)
+);
+
+<span class="cm">-- Seed data</span>
+INSERT IGNORE INTO users (name, role, password) VALUES
+  ('warden',      'STAFF',   'staff123'),
+  ('electrician', 'STAFF',   'staff123'),
+  ('student1',    'STUDENT', 'pass123'),
+  ('student2',    'STUDENT', 'pass123');</pre>
+
+<!-- ===== FLOW ===== -->
+<h2 id="flow">8. App Flow &amp; Viva Tips</h2>
+
+<h3>Menu Flow</h3>
+<table>
+  <tr><th>Screen</th><th>Options</th></tr>
+  <tr><td><strong>Main Menu</strong></td><td>1. Login &nbsp; 2. Register (Student) &nbsp; 3. Exit</td></tr>
+  <tr><td><strong>Student Menu</strong></td><td>1. Raise complaint &nbsp; 2. View my complaints &nbsp; 3. Details &amp; history &nbsp; 4. Logout</td></tr>
+  <tr><td><strong>Staff Menu</strong></td><td>1. View all &nbsp; 2. View by status &nbsp; 3. Update status &nbsp; 4. Details &amp; history &nbsp; 5. Dashboard &nbsp; 6. Logout</td></tr>
+</table>
+
+<h3>Complaint Preview (Polymorphism in action)</h3>
+<p>When a student raises a complaint, before saving, the app shows a preview using the polymorphic methods:</p>
+<pre>  --- PREVIEW ---
+  Type            : Plumbing
+  Location        : Block A, Room 203
+  Description     : Pipe leaking near window
+  Assigned team   : Plumbing team          ← getAssignedTeam()  (polymorphism)
+  Est. resolution : 48 hours               ← getEstimatedResolutionHours() (polymorphism)
+  Safety note     : Turn off the nearest valve if there is flooding.  ← getSafetyNote() (polymorphism)
+  ---------------
+  Confirm? (y/n):</pre>
+
+<h3>Common Viva Questions</h3>
+<table>
+  <tr><th>Question</th><th>Answer</th></tr>
+  <tr><td>What is abstraction here?</td><td><code>Complaint</code> and <code>User</code> are abstract — you can't create them directly. They define what subclasses must do via abstract methods.</td></tr>
+  <tr><td>Where is polymorphism?</td><td><code>getAssignedTeam()</code> is called on a <code>Complaint</code> reference. The actual method that runs depends on whether it's an <code>ElectricalComplaint</code>, <code>PlumbingComplaint</code>, etc.</td></tr>
+  <tr><td>What is the Singleton for?</td><td><code>DBConnector</code> — ensures only one MySQL connection is open. Private constructor + static <code>getInstance()</code>.</td></tr>
+  <tr><td>What is the Factory for?</td><td><code>ComplaintFactory.create()</code> — the caller just says "give me an ELECTRICAL complaint" and the factory creates the right subclass. The caller doesn't care which class it is.</td></tr>
+  <tr><td>Why PreparedStatement?</td><td>Prevents SQL injection. The query template is compiled once; user input goes in as parameters, never as raw SQL text.</td></tr>
+  <tr><td>What is a transaction?</td><td>In <code>updateStatus()</code>, we do two DB operations (update complaint + insert log row). If one fails, <code>rollback()</code> undoes both, keeping data consistent.</td></tr>
+  <tr><td>Why checked exceptions?</td><td>The compiler forces every caller to handle them — you can't forget to deal with an invalid login or a bad transition. They are safer than runtime exceptions for expected error conditions.</td></tr>
+</table>
+
+<div class="box green" style="margin-top:32px">
+  <div class="label">✅ To Run</div>
+  <strong>1.</strong> In cmd.exe: &nbsp;<code>mysql -u root -p&lt;password&gt; &lt; sql\schema.sql</code><br/>
+  <strong>2.</strong> Edit <code>src/main/resources/db.properties</code> with your password.<br/>
+  <strong>3.</strong> In PowerShell: &nbsp;<code>mvn compile exec:java</code>
+</div>
+
+<p style="margin-top:40px;color:#94a3b8;font-size:12px;text-align:center">
+  FixIt — KTU 2024 OOP Mini-Project &nbsp;|&nbsp; Java 17 + Maven + MySQL
+</p>
+
+</body>
+</html>

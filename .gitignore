@@ -1,0 +1,15 @@
+# ---- build output ----
+target/
+
+# ---- DB credentials (never commit) ----
+src/main/resources/db.properties
+
+# ---- IDE files ----
+.idea/
+*.iml
+.vscode/
+*.class
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
